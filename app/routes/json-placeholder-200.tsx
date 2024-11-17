@@ -28,7 +28,7 @@ export default function JsonPlaceholder200Page() {
 
   return (
     <div>
-      <h1 className="text-2xl">JSON Placeholder で 200件取得</h1>
+      <h1 className="text-2xl">JSON Placeholder から 200件取得</h1>
 
       <Suspense
         fallback={

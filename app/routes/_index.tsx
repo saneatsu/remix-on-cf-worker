@@ -39,7 +39,15 @@ export default function Index() {
                 to='/json-placeholder-200'
                 className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
               >
-                JSON Placeholder で 200件取得
+                JSON Placeholder から 200件取得
+              </Link>
+            </li>
+            <li>
+              <Link
+                to='/json-placeholder-1000'
+                className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
+              >
+                JSON Placeholder から 1000件取得
               </Link>
             </li>
           </ul>
