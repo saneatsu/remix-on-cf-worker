@@ -1,6 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "remix-on-cf-worker"
-compatibility_date = "2023-05-18"
+compatibility_date = "2024-11-12"
 main = "./server.ts"
 assets = { directory = "./build/client" }
 

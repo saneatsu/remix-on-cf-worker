@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
-import type { PrismaClient, User } from "@prisma/client";
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Await, useLoaderData } from "@remix-run/react";
+import { db } from "db";
+import { companyTable,  userTable } from "db/schema";
+import type { InsertCompany, InsertUser } from 'db/schema';
 
-async function getUsers(client: PrismaClient): Promise<User[]> {
+async function getUsers(): Promise<InsertUser[]> {
   try {
-    const users = await client.user.findMany();
+    const users = await db.select().from(userTable)
     return users
   } catch (error) {
     console.error(error)
@@ -14,18 +15,30 @@ async function getUsers(client: PrismaClient): Promise<User[]> {
   }
 }
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  const users = getUsers(context.db)
-  return { users };
+async function getCompanies(): Promise<InsertCompany[]> {
+  try {
+    const companies = await db.select().from(companyTable)
+    return companies
+  } catch (error) {
+    console.error(error)
+    throw new Error('Failed to fetch companies')
+  }
+}
+
+export async function loader() {
+  const users = getUsers()
+  const companies = getCompanies()
+  return { users, companies }
 }
 
 export default function DbConnectPage() {
-  const { users } = useLoaderData<typeof loader>();
+  const { users, companies  } = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div className="space-y-10">
       <h1 className="text-2xl">DB（Turso）からデータを取得</h1>
 
+      <h2 className="text-xl">ユーザー一覧</h2>
       <Suspense
         fallback={
           <div>
@@ -42,6 +55,28 @@ export default function DbConnectPage() {
 
             return <ul>
               {users.map((user) => <li key={user.id}>{user.email}</li>)}
+            </ul>
+          }}
+        </Await>
+      </Suspense>
+
+      <h2 className="text-xl">会社</h2>
+      <Suspense
+        fallback={
+          <div>
+            <p>loading...</p>
+          </div>
+        }
+      >
+        <Await resolve={companies} errorElement={<p>error</p>}>
+          {(companies) => {
+            console.dir(companies);
+            if (!companies) {
+              return <p>no data</p>
+            }
+
+            return <ul>
+              {companies.map((company) => <li key={company.id}>{company.name}</li>)}
             </ul>
           }}
         </Await>
