@@ -1,14 +1,19 @@
-# Welcome to Remix + Cloudflare Workers!
+# Remix + Cloudflare Workers for comparison Prisma and Drizzle
 
-- 📖 [Remix docs](https://remix.run/docs)
-- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+This repository a rewrite of what I did with [Remix + Cloudflare Pages](https://github.com/saneatsu/remix-on-cf-pages ) for Cloudflare Worker.
+
+## Background
+
+While developing with Remix and Cloudflare, we encountered a phenomenon where TTFB took more than 4 seconds.
+
+The cause may be that Prisma is used as an ORM, so we measured TTFB using Prisma and Drizzle.
 
 ## Development
 
-Run the dev server:
+Run the dev server with using `.env.development`
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 To run Wrangler:
@@ -18,26 +23,17 @@ npm run build
 npm start
 ```
 
-## Typegen
-
-Generate types for your Cloudflare bindings in `wrangler.toml`:
-
-```sh
-npm run typegen
-```
-
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
-
 ## Deployment
 
-If you don't already have an account, then [create a cloudflare account here](https://dash.cloudflare.com/sign-up) and after verifying your email address with Cloudflare, go to your dashboard and set up your free custom Cloudflare Workers subdomain.
+First, edit `.env.production` for using Turso.
 
-Once that's done, you should be able to deploy your app:
-
-```sh
-npm run deploy
+```.env.production
+VITE_TURSO_URL=libsql://.turso.io
+VITE_TURSO_AUTH_TOKEN=eyJxxx
 ```
 
-## Styling
+Deploy.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+```sh
+pnpm run deploy
+```
